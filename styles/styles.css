@@ -2,6 +2,8 @@
 @import url('./basics/base.css');
 @import url('./basics/layout.css');
 
-/* componants */
-@import url('./componants/canvas.css');
-@import url('./componants/gallery.css');
+/* components */
+@import url('./components/heading.css');
+@import url('./components/canvas.css');
+@import url('./components/gallery.css');
+@import url('./components/editor.css');

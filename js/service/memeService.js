@@ -15,7 +15,7 @@ var gMeme = {
             txt: 'I sometimes eat food lorem ipsutmlrkgjerge riigje',
             size: 30,
             color: 'pink'
-        }
+        },
     ]
     
 }
@@ -26,6 +26,8 @@ function getMeme(){
     return gMeme
 }
 
+
+
 function deleteMeme(){
 
 }
@@ -34,10 +36,9 @@ function updateMeme(){
 
 }
 
-function setLineTxt(lineIdx,txt){
-    gMeme.lines[lineIdx].txt= txt
+function setLineTxt(txt){
+    gMeme.lines[gMeme.selectedLineIdx].txt= txt
 }
-
 
 function getImgUrl(id){
     const img= gImgs.find(img => img.id === id)
@@ -50,6 +51,39 @@ function getImgs(){
 
 function setImg(id){
     gMeme.selectedImgId=id
+}
+
+function setLineColor(color){
+    gMeme.lines[gMeme.selectedLineIdx].color= color
+}
+function SetFontSize(diff){
+    gMeme.lines[gMeme.selectedLineIdx].size+=diff
+}
+
+function addLine(){
+    gMeme.lines.push(_createLine())
+    gMeme.selectedLineIdx= gMeme.lines.length-1
+}
+
+function switchSelectedLine(){
+    gMeme.selectedLineIdx++
+    if (gMeme.selectedLineIdx >= gMeme.lines.length) gMeme.selectedLineIdx= 0
+}
+
+function selectLine(idx){
+    gMeme.selectedLineIdx= idx
+}
+
+function getSelectedLineTxt(){
+    return gMeme.lines[gMeme.selectedLineIdx].txt
+}
+
+function _createLine(txt='Your text here'){
+   return {
+        txt,
+        size: 30,
+        color: 'pink'
+    }
 }
 
 function _createImgs(){

@@ -1,33 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
     <title>Leelush's Memes</title>
 </head>
+
 <body onload="onInit()">
-    <header>
-        <nav class="main-nav">
-            <h1>Lee's meme generator</h1>
-        </nav>
-    </header>
-    <section class="editor">
-        <div class="canvas-container">
-            <canvas width="400" height="400"></canvas>
-            <div style="display:none;"><img class="canvas-img" src="img/1.jpg" /></div>
-        </div>
-        <div class="editor-menu">
-            <input name="meme-txt" placeholder="Enter your meme text">
-            <button class="submit-txt" onclick="onSetLineTxt()">Go</button>
-        </div>
-    </section>
-    <section class="gallery">
-    </section>
+    <main class="main-layout">
+        <header class="full">
+            <nav class="main-nav">
+                <h1>Lee's meme generator</h1>
+                <ul>
+                    <li>Gallery</li>
+                    <li>Memes</li>
+                    <li>About</li>
+            </nav>
+        </header>
+        <section class="editor center">
+            <div class="canvas-container">
+                <canvas width="400" height="400"></canvas>
+                <div style="display:none;"><img class="canvas-img" src="img/1.jpg" /></div>
+            </div>
+            <div class="editor-menu">
+                <h4>Edit Text Line </h4>
+                <p><span>1</span>/<span>3</span></p>
+                <button onclick="onAddLine()">Add</button>
+                <button onclick="onSwitchLine()">Next</button>
+                <button onclick="onSwitchLine()">Delete</button>
+                <input name="meme-txt" placeholder="Enter your meme text" onchange="onSetLineTxt()">
+                <div class="text-edit-toolbar">
+                    <input type="color" onchange="onSetFontColor(this)" value="#ffffff">
+                    <button onclick="onSetFontSize(-1)">-</button>
+                    <button onclick="onSetFontSize(1)">+</button>
+                </div>
+                <a href="#" onclick="onDownloadMeme(this)" download="">Download Meme</a>
+            </div>
+        </section>
+        <section class="gallery center">
+        </section>
+    </main>
 
 </body>
 <script src="js/service/memeService.js"></script>
 <script src="js/service/galleryService.js"></script>
 <script src="js/memeController.js"></script>
 <script src="js/galleryController.js"></script>
+
 </html>

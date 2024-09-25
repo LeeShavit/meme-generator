@@ -1,0 +1,18 @@
+.main-nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    color: white;
+    background: rgb(238,174,202);
+    background: linear-gradient(156deg, rgba(238,174,202,1) 0%, rgba(238,174,230,1) 35%, rgba(148,187,233,1) 100%);
+}
+.main-nav h1{
+    text-shadow: 3px 5px 2px #474747;
+}
+
+.main-nav ul{
+    display: flex;
+    gap: 20px;
+    cursor: pointer;
+}

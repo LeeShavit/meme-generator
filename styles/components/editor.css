@@ -1,0 +1,7 @@
+.editor-menu {
+    border: 1px solid black;
+}
+
+.editor {
+    grid-template-columns: 1fr minmax(auto, 1fr);
+}
