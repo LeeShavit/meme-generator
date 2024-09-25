@@ -1,7 +1,64 @@
-.editor-menu {
-    border: 1px solid black;
+.editor {
+    display: grid;
+    justify-content:center;
+
+    max-height: 90vh;
+    padding-top: 20px;
+    padding-inline: 20px;
+    margin: auto;
 }
 
-.editor {
-    grid-template-columns: 1fr minmax(auto, 1fr);
+.editor-menu {
+    display: grid;
+    grid-auto-rows: max-content;
+    gap: 20px;
+}
+
+.line-setting{    
+    display: grid;
+    grid-template-columns: 6fr 1fr 1fr 1fr 1fr;
+    justify-content: end;
+    column-gap: 10px;
+    width: 100%;
+}
+
+.line-setting h4{
+    justify-self: start;
+}
+
+.text-edit-toolbar{
+    display: grid;
+    grid-auto-rows: auto;
+    background-color: white;
+}
+
+.text-edit-toolbar >*:not(.meme-txt){
+    grid-row: 1;
+}
+
+.meme-txt{
+    grid-column: 1/8;
+    width: 100%;
+    height: 60px;
+    border: 0;
+    border-top: 1px solid rgb(199, 199, 199);
+}
+
+.font-select{
+    width: 120px;
+    border: 1px solid rgb(199, 199, 199);
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.color-select{
+    position: relative;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.sticker{
+    font-size: xx-large;
 }

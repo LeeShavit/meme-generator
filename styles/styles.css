@@ -2,8 +2,13 @@
 @import url('./basics/base.css');
 @import url('./basics/layout.css');
 
+/* setup */
+@import url('./setup/mq.css');
+@import url('./setup/vars.css');
+
 /* components */
 @import url('./components/heading.css');
 @import url('./components/canvas.css');
 @import url('./components/gallery.css');
 @import url('./components/editor.css');
+@import url('./components/share.css');

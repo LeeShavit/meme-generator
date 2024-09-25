@@ -9,39 +9,63 @@
 </head>
 
 <body onload="onInit()">
-    <main class="main-layout">
-        <header class="full">
+        <header class="">
             <nav class="main-nav">
                 <h1>Lee's meme generator</h1>
                 <ul>
-                    <li>Gallery</li>
-                    <li>Memes</li>
+                    <li onclick="onGalleryView()">Gallery</li>
+                    <li onclick="onMemeView()">My Memes</li>
                     <li>About</li>
             </nav>
         </header>
-        <section class="editor center">
+        <section class="editor hide">
             <div class="canvas-container">
                 <canvas width="400" height="400"></canvas>
                 <div style="display:none;"><img class="canvas-img" src="img/1.jpg" /></div>
             </div>
             <div class="editor-menu">
-                <h4>Edit Text Line </h4>
-                <p><span>1</span>/<span>3</span></p>
-                <button onclick="onAddLine()">Add</button>
-                <button onclick="onSwitchLine()">Next</button>
-                <button onclick="onSwitchLine()">Delete</button>
-                <input name="meme-txt" placeholder="Enter your meme text" onchange="onSetLineTxt()">
-                <div class="text-edit-toolbar">
-                    <input type="color" onchange="onSetFontColor(this)" value="#ffffff">
-                    <button onclick="onSetFontSize(-1)">-</button>
-                    <button onclick="onSetFontSize(1)">+</button>
+                <div class="line-setting">
+                    <h4>Edit Text Line </h4>
+                    <p><span>1</span>/<span>3</span></p>
+                    <button onclick="onAddLine()">+</button>
+                    <button onclick="onSwitchLine()">↕︎</button>
+                    <button onclick="onDeleteLine()">🗑️</button>
                 </div>
-                <a href="#" onclick="onDownloadMeme(this)" download="">Download Meme</a>
+                <div class="text-edit-toolbar">
+                    <select class="font-select" onchange="onChangeFont(this)" >
+                        <option>impact</option>
+                        <option>Ariel</option>
+                        <option>Sans Serif</option>
+                        <option>Verdana</option>
+                        <option>Helvetica</option>
+                        <option>Roboto</option>
+                        <option>Calibri</option>
+                    </select>
+                    <button onclick="onSetFontSize(-1)">A⁻</button>
+                    <button onclick="onSetFontSize(1)">A⁺</button>
+                    <button onclick="onChangeTextAlignment('left')">≪</button>
+                    <button onclick="onChangeTextAlignment('center')">∧</button>
+                    <button onclick="onChangeTextAlignment('right')">≫</button>
+                    <input class="color-select" type="color" onchange="onSetFontColor(this)" value="#ffffff">
+                    <input class="meme-txt" name="meme-txt" placeholder="Enter your meme text" onchange="onSetLineTxt()">
+                </div>
+                <div class="move-line">
+                    <button onclick="onMoveLine(-1)">Move Line ⇩</button>
+                    <button onclick="onMoveLine(1)">Move Line ⇧</button>
+                </div>
+                <div class="sticker"> 😚🥹😁😉🤪🥳🥸</div>
+                <section class="share-modal">
+                    <button onclick="onSaveMeme()">⬇️ Save</button>
+                    <a class="download-btn" href="#" onclick="onDownloadMeme(this)" download="">💾 Download</a>
+                    <button>👤 Share to FB </button>
+                </section>
             </div>
+        </div>
         </section>
-        <section class="gallery center">
+        <section class="gallery">
+            <input class="meme-search" placeholder="Search...">
+            <div class="imgs-container"></div>
         </section>
-    </main>
 
 </body>
 <script src="js/service/memeService.js"></script>
