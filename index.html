@@ -6,17 +6,25 @@
     <link rel="stylesheet" href="styles/styles.css">
     <title>Leelush's Memes</title>
 </head>
-<body>
+<body onload="onInit()">
     <header>
         <nav class="main-nav">
             <h1>Lee's meme generator</h1>
         </nav>
     </header>
+    <section class="editor">
+        <div class="canvas-container">
+            <canvas width="400" height="400"></canvas>
+            <div style="display:none;"><img class="canvas-img" src="img/1.jpg" /></div>
+        </div>
+        <div class="editor-menu">
+            <input name="meme-txt" placeholder="Enter your meme text">
+            <button class="submit-txt" onclick="onSetLineTxt()">Go</button>
+        </div>
+    </section>
     <section class="gallery">
     </section>
 
-    <section class="editor">
-    </section>
 </body>
 <script src="js/service/memeService.js"></script>
 <script src="js/service/galleryService.js"></script>

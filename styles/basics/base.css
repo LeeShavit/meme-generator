@@ -1,0 +1,35 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'playfair', serif;
+    color: var(--clr-primary-base);
+    line-height: 1.7142857;
+}
+
+body {
+    margin: 0;
+    font-size: 0.875rem;
+    background-color: whitesmoke;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.4;
+    margin: 0 0 0.8em;
+}
+
+
+p {
+    margin: 0 0 1em;
+}
+
+img {
+    width: 100%;
+}
+

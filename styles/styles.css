@@ -1,2 +1,7 @@
 /* basics */
-@import url('./basics/main.css');
+@import url('./basics/base.css');
+@import url('./basics/layout.css');
+
+/* componants */
+@import url('./componants/canvas.css');
+@import url('./componants/gallery.css');
