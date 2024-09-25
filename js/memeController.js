@@ -37,16 +37,14 @@ function drawText(line, lineIdx, selectedLineIdx) {
         posY = gElCanvas.height / 2 - line.size / 2
     }
     gCtx.textAlign = line.textAlign
-    if (line.textAlign === 'center') {
-        diff += gElCanvas.width / 2
-    } else if (line.textAlign === 'right')
-        diff = gElCanvas.width - diff
+
     gCtx.font = line.size + 'px ' + line.font
     gCtx.textBaseline = 'top'
     gCtx.fillStyle = line.color
     gCtx.strokeStyle = 'black'
-    //save pos
-    if(!gLinesPos[lineIdx]){
+    //save pos if not found
+    if (!gLinesPos[lineIdx]) {
+        console.log('here')
         gLinesPos[lineIdx] = {
             x: diff,
             y: posY,
@@ -54,7 +52,9 @@ function drawText(line, lineIdx, selectedLineIdx) {
             height: line.size
         }
     }
-    const {x,y,width,height}= gLinesPos[lineIdx]
+    const { x, y, width, height } = gLinesPos[lineIdx]
+    console.log(gLinesPos[lineIdx])
+    console.log(x)
     gCtx.fillText(line.txt, x, y, width)
     gCtx.strokeText(line.txt, x, y, width)
 
@@ -185,6 +185,14 @@ function onChangeFont(elSelect) {
 
 function onChangeTextAlignment(align) {
     setTextAlignment(align)
+    const idx = getMeme().selectedLineIdx
+    let diff = 10
+    if (align === 'center') {
+        diff += gElCanvas.width / 2
+    } else if (align === 'right') {
+        diff = gElCanvas.width - diff
+    }
+    gLinesPos[idx].x = diff
     renderMeme()
 }
 
@@ -203,12 +211,12 @@ function onSaveMeme() {
 }
 
 function onMoveLine(diff) {
-    const idx=getMeme().selectedLineIdx
-    gLinesPos[idx].y+= diff
+    const idx = getMeme().selectedLineIdx
+    gLinesPos[idx].y += diff
     renderMeme()
 }
 
-function onDeleteLine(){
+function onDeleteLine() {
     deleteLine()
     renderMeme()
 }
