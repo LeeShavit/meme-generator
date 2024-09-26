@@ -10,74 +10,106 @@
 </head>
 
 <body onload="onInit()">
-        <header class="">
-            <nav class="main-nav">
-                <div class="menu-open-screen" onclick="onToggleMenu()"></div>
-                <h1>Lee's meme generator</h1>
-                <ul>
-                    <li onclick="onGalleryView()">Gallery</li>
-                    <li onclick="onMyMemesView()">My Memes</li>
-                    <li>About</li>
-                </ul>
-                    <button class="toggle-menu-btn" onclick="onToggleMenu()"><i class="fa-solid fa-bars"></i></button>
-            </nav>
-        </header>
-        <section class="editor hide">
-            <div class="canvas-container">
-                <canvas class="main-canvas" width="400" height="400"></canvas>
-                <div style="display:none;"><img class="canvas-img" src="img/1.jpg" /></div>
-            </div>
-            <div class="editor-menu">
-                <div class="line-setting">
-                    <h4>Edit Text Line </h4>                    <button onclick="onAddLine()">+</button>
-                    <button onclick="onSwitchLine()"><i class="fa-solid fa-up-down"></i></button>
-                    <button onclick="onDeleteLine()"><i class="fa-solid fa-trash"></i></button>
-                </div>
-                <div class="text-edit-toolbar">
-                    <select class="font-select" onchange="onChangeFont(this)" >
-                        <option>impact</option>
-                        <option>Ariel</option>
-                        <option>Sans Serif</option>
-                        <option>Verdana</option>
-                        <option>Helvetica</option>
-                        <option>Roboto</option>
-                        <option>Calibri</option>
-                    </select>
-                    <button onclick="onSetFontSize(-1)"><i class="fa-solid fa-font"></i>−</button>
-                    <button onclick="onSetFontSize(1)"><i class="fa-solid fa-font"></i>+</button>
-                    <button onclick="onChangeTextAlignment('left')"><i class="fa-solid fa-align-left"></i></button>
-                    <button onclick="onChangeTextAlignment('center')"><i class="fa-solid fa-align-center"></i></button>
-                    <button onclick="onChangeTextAlignment('right')"><i class="fa-solid fa-align-right"></i></button>
-                    <input class="color-select" type="color" onchange="onSetFontColor(this)" value="#ffffff">
-                    <input class="meme-txt" name="meme-txt" placeholder="Enter your meme text" onchange="onSetLineTxt()">
-                </div>
-                <div class="move-line"> 
-                    <h4>Move line</h4>
-                    <button onclick="onMoveLine(-1)"><i class="fa-solid fa-arrows-down-to-line"></i></button>
-                    <button onclick="onMoveLine(1)"><i class="fa-solid fa-arrows-up-to-line"></i></button>
-                </div>
-                <div class="sticker"> 😚🥹😁😉🤪🥳🥸</div>
-                <section class="share-btn-container">
-                    <button onclick="onSaveMeme()"><i class="fa-solid fa-floppy-disk"></i></button>
-                    <a class="download-btn" href="#" onclick="onDownloadMeme(this)" download=""><i class="fa-solid fa-download"></i></a>
-                    <button><i class="fa-brands fa-square-facebook"></i></button>
-                </section>
-            </div>
+    <header class="">
+        <nav class="main-nav">
+            <div class="menu-open-screen" onclick="onToggleMenu()"></div>
+            <h1>Lee's meme generator</h1>
+            <ul>
+                <li onclick="onGalleryView()">Gallery</li>
+                <li onclick="onMyMemesView()">My Memes</li>
+                <li>About</li>
+            </ul>
+            <button class="toggle-menu-btn" onclick="onToggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        </nav>
+    </header>
+    <section class="editor hide">
+        <div class="canvas-container">
+            <canvas class="main-canvas" width="400" height="400"></canvas>
         </div>
-        </section>
-        <section class="gallery">
-            <input class="meme-search" placeholder="Search...">
-            <div class="imgs-container"></div>
-            <button class="flexible-btn" onclick="onPresentRandomMeme()">I'm flexible</button>
-        </section>
-        <section class="my-memes-gallery gallery hide">
-            <input class="meme-search" placeholder="Search...">
-            <div class="memes-container"></div>
-        </section>
+        <div class="editor-menu">
+            <div class="line-setting">
+                <h4>Edit Text Line </h4> <button onclick="onAddLine()">+</button>
+                <button onclick="onSwitchLine()"><i class="fa-solid fa-up-down"></i></button>
+                <button onclick="onDeleteLine()"><i class="fa-solid fa-trash"></i></button>
+            </div>
+            <div class="text-edit-toolbar">
+                <select class="font-select" onchange="onChangeFont(this)">
+                    <option>impact</option>
+                    <option>Ariel</option>
+                    <option>Sans Serif</option>
+                    <option>Verdana</option>
+                    <option>Helvetica</option>
+                    <option>Roboto</option>
+                    <option>Calibri</option>
+                </select>
+                <button onclick="onSetFontSize(-1)"><i class="fa-solid fa-font"></i>−</button>
+                <button onclick="onSetFontSize(1)"><i class="fa-solid fa-font"></i>+</button>
+                <button onclick="onChangeTextAlignment('left')"><i class="fa-solid fa-align-left"></i></button>
+                <button onclick="onChangeTextAlignment('center')"><i class="fa-solid fa-align-center"></i></button>
+                <button onclick="onChangeTextAlignment('right')"><i class="fa-solid fa-align-right"></i></button>
+                <input class="color-select" type="color" onchange="onSetFontColor(this)" value="#ffffff">
+                <input class="meme-txt" name="meme-txt" placeholder="Enter your meme text" onchange="onSetLineTxt()">
+            </div>
+            <div class="move-line">
+                <h4>Move line</h4>
+                <button onclick="onMoveLine(-1)"><i class="fa-solid fa-arrows-up-to-line"></i></button>
+                <button onclick="onMoveLine(1)"><i class="fa-solid fa-arrows-down-to-line"></i></button>
+            </div>
+            <div class="sticker">
+                <button onclick="onAddSticker(this)">🥰</button>
+                <button onclick="onAddSticker(this)">💐</button>
+                <button onclick="onAddSticker(this)">🩷</button>
+                <button onclick="onAddSticker(this)">🎀</button>
+                <button onclick="onAddSticker(this)">😻</button>
+                <button onclick="onAddSticker(this)">🌷</button>
+                <button onclick="onAddSticker(this)">🌺</button>
+                <button onclick="onAddSticker(this)">👩‍❤️‍💋‍👩</button>
+                <button onclick="onAddSticker(this)">🎟️</button>
+                <button onclick="onAddSticker(this)">🌸</button>
+                </div>
+            <section class="share-btn-container">
+                <button onclick="onSaveMeme()"><i class="fa-solid fa-floppy-disk"></i></button>
+                <a class="download-btn" href="#" onclick="onDownloadMeme(this)" download=""><i class="fa-solid fa-download"></i></a>
+                <button onclick="onShareToFB()"><i class="fa-brands fa-square-facebook"></i></button>
+            </section>
+        </div>
+        </div>
+    </section>
+    <section class="gallery">
+            <ul class="keywords-bar">
+                <li>funny</li>
+                <li>animal</li>
+                <li>happy</li>
+                <li>awkward</li>
+                <li>bad</li>
+            </ul>
+        <input list="meme-tags" name="meme-search" class="meme-search" oninput="onFilterMemes(this)" placeholder="Search...">
+        <datalist id="meme-tags">
+            <option value="cute"></option>
+            <option value="baby"></option>
+            <option value="funny"></option>
+            <option value="politic"></option>
+            <option value="calm"></option>
+        </datalist>
+        <button class="reset-btn" onclick="onResetFilter()">Clear Filter</button>
+        <div class="imgs-container"></div>
+        <div class="floating upload">
+            <label for="file-upload">
+                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+            </label>
+            <input type="file" id="file-upload" class="file-input btn" name="image" onchange="onImgInput(event)">
+        </div>
+        <button class="floating flexible" onclick="onPresentRandomMeme()">I'm flexible</button>
+    </section>
+    <section class="my-memes-gallery gallery hide">
+        <input class="meme-search" placeholder="Search...">
+        <div class="memes-container"></div>
+    </section>
 
 </body>
-<script src="js/service/strorage.service.js"></script>
 <script src="js/service/util.service.js"></script>
+<script src="js/service/strorage.service.js"></script>
+<script src="js/service/upload.service.js"></script>
 <script src="js/service/memeService.js"></script>
 <script src="js/service/galleryService.js"></script>
 <script src="js/memeController.js"></script>

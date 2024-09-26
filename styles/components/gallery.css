@@ -16,8 +16,9 @@
 }
 
 .meme-search{
-    width: calc(100vw - 40px);
-    max-width: calc(1100px - 40px);
+    display: inline;
+    width: calc(100vw - 150px);
+    max-width: calc(1100px - 150px);
 
     padding: 6px 10px;
     border: 1px solid rgb(168, 168, 168);
@@ -25,10 +26,14 @@
     margin: 20px;
 }
 
-.flexible-btn{
+.reset-btn{
+    padding: 6px 10px;
+    border: 1px solid rgb(168, 168, 168);
+    border-radius: 15px;
+}
+
+.floating{
     position: fixed;
-    right: 30px;
-    bottom: 30px;
 
     background-color: pink;
     color: rgb(0, 0, 0);
@@ -36,7 +41,23 @@
 
     padding: 15px 20px;
     border-radius: 10px;
+}
 
+.floating.flexible{
+    right: 30px;
+    bottom: 30px;
+    cursor: pointer;
+}
+
+.floating.upload{
+    left: 30px;
+    bottom: 30px;
+}
+
+.floating.upload input{
+    display: none
+}
+.floating.upload label{
     cursor: pointer;
 }
 

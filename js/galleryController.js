@@ -5,13 +5,14 @@ window.addEventListener('resize', () => {
 })
 
 
-function renderGallery() {
+function renderGallery(key='') {
     const elGallery = document.querySelector('.imgs-container')
-    const imgs = getImgs()
+    const imgs = getImgs(key)
     const strHTMLs = imgs.map(img =>
         `<img class="gallery-img" onclick="onSelectImg(${img.id})" src="${img.url}"></img>`
     )
     elGallery.innerHTML = strHTMLs.join('')
+    renderKeywords()
 }
 
 function renderSaveMemesGallery() {
@@ -66,13 +67,13 @@ function onPresentRandomMeme() {
 }
 
 function onMyMemesView() {
+    resetUploadedImg()
     renderSaveMemesGallery()
     resizeSavedMemesCanvas()
     document.querySelector('body').classList.remove('menu-open')
     document.querySelector('.gallery').classList.add('hide')
     document.querySelector('.editor').classList.add('hide')
     document.querySelector('.my-memes-gallery').classList.remove('hide')
-
 }
 
 function onEditSavedMeme(idx) {
@@ -83,5 +84,23 @@ function onEditSavedMeme(idx) {
 
 function onToggleMenu(){
     document.querySelector('body').classList.toggle('menu-open')
-    console.log('click')
+}
+
+function onFilterMemes(elInput){
+     renderGallery(elInput.value) 
+}
+
+function renderKeywords(){
+    const elKeywords = document.querySelector('.keywords-bar')
+    const  wordsCount =getKeywordsSize()
+    var strHTMLs= ''
+    for (const word in wordsCount) {
+        const size= wordsCount[word]*5
+        strHTMLs+=`<li style="font-size: ${size}px;" onclick="renderGallery('${word}')" >${word}</li>`
+        }    
+    elKeywords.innerHTML = strHTMLs
+}
+
+function onResetFilter(){
+    renderGallery() 
 }

@@ -74,5 +74,9 @@
 }
 
 .sticker{
-    font-size: xx-large;
+    min-width: 280px;
+    text-align: center;
+}
+.sticker button{
+    font-size: 40px;
 }

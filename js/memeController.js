@@ -6,9 +6,11 @@ let gElImg
 
 let gLinesPos = []
 
-let lineIsDrag = false
+let gLineDragIdx = -1
 let gLastPos
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
+
+let gUploadedImg
 
 function onInit() {
     gElCanvas = document.querySelector('.main-canvas')
@@ -22,44 +24,46 @@ function onInit() {
 }
 
 function renderMeme(meme = getMeme(), elCanvas = gElCanvas, ctx = gCtx) {
-    const elImg = new Image()
-    elImg.src = getImgUrl(meme.selectedImgId)
-    ctx.drawImage(elImg, 0, 0, elCanvas.width, elCanvas.height)
+    const img = (gUploadedImg) ? gUploadedImg : getImg(meme.selectedImgId)
+    ctx.drawImage(img, 0, 0, elCanvas.width, elCanvas.height)
     meme.lines.forEach((line, idx) => drawText(line, idx, meme.selectedLineIdx, elCanvas, ctx))
     document.querySelector('input[name="meme-txt"]').value = getSelectedLineTxt()
 }
 
 function drawText(line, lineIdx, selectedLineIdx, elCanvas, ctx) {
-    let diff = 10
-    let posY = diff
-    if (lineIdx === 1) {
-        posY = elCanvas.height - line.size - diff
-    } else if (lineIdx > 1) {
-        posY = elCanvas.height / 2 - line.size / 2
-    }
+
     ctx.textAlign = line.textAlign
     const fontSize = line.size * (elCanvas.width / 300)
-
     ctx.font = fontSize + 'px ' + line.font
     ctx.textBaseline = 'top'
     ctx.fillStyle = line.color
     ctx.strokeStyle = 'black'
+
     //save pos if not found
     if (!gLinesPos[lineIdx]) {
+        let diff = 10
+        let posY = diff
+        if (lineIdx === 1) {
+            posY = elCanvas.height - line.size - diff
+        } else if (lineIdx > 1) {
+            posY = elCanvas.height / 2 - line.size / 2
+        }
         gLinesPos[lineIdx] = {
             x: diff,
             y: posY,
-            height: fontSize
+            height: fontSize,
+            width: ctx.measureText(line.txt).width
         }
     }
-    const { x, y, height } = gLinesPos[lineIdx]
+
+    const { x, y, height, width } = gLinesPos[lineIdx]
     ctx.fillText(line.txt, x, y, elCanvas.width - 20)
     ctx.strokeText(line.txt, x, y, elCanvas.width - 20)
 
     if (lineIdx === selectedLineIdx) {
         gCtx.beginPath()
         gCtx.strokeStyle = 'white'
-        gCtx.rect(10, y, elCanvas.width - 20, height + 2)
+        gCtx.rect(x - 2, y, width + 4, height + 2)
         gCtx.stroke()
     }
 }
@@ -81,8 +85,8 @@ function onSetFontSize(diff) {
     renderMeme()
 }
 
-function onAddLine() {
-    addLine()
+function onAddLine(txt) {
+    addLine(txt)
     renderMeme()
 }
 
@@ -91,11 +95,10 @@ function onSwitchLine() {
     renderMeme()
 }
 
-function isLineClicked(pos) {
-    console.log(gLinesPos, pos)
+function findLineClicked(pos) {
     return gLinesPos.findIndex(linePos =>
-        ((pos.x >= linePos.x) && (pos.x <= linePos.x + gElCanvas.width - 20)) &&
-        ((pos.y >= linePos.y) && (pos.y <= linePos.y + gElCanvas.width - 20))
+        ((pos.x >= linePos.x) && (pos.x <= linePos.x + linePos.width)) &&
+        ((pos.y >= linePos.y) && (pos.y <= linePos.y + linePos.height))
     )
 }
 
@@ -156,12 +159,11 @@ function getEvPos(ev) {
 
 function onDown(ev) {
     const pos = getEvPos(ev)
-    const currLineIdx = isLineClicked(pos)
-    console.log(currLineIdx)
+    const currLineIdx = findLineClicked(pos)
     if (currLineIdx === -1) return
     selectLine(currLineIdx)
     renderMeme()
-    lineIsDrag = true
+    gLineDragIdx = currLineIdx
     //* Save the pos we start from
     gLastPos = pos
     document.body.style.cursor = 'grabbing'
@@ -169,13 +171,22 @@ function onDown(ev) {
 
 //to do
 function onMove(ev) {
-    if (!lineIsDrag) return
+    if (gLineDragIdx === -1) return
+    const pos = getEvPos(ev)
 
+    const dx = pos.x - gLastPos.x
+    const dy = pos.y - gLastPos.y
+
+    gLinesPos[gLineDragIdx].x += dx
+    gLinesPos[gLineDragIdx].y += dy
+
+    gLastPos = pos
+    renderMeme()
 }
 
 //to do
 function onUp() {
-    lineIsDrag = false
+    gLineDragIdx = -1
     document.body.style.cursor = 'auto'
 }
 
@@ -199,6 +210,7 @@ function onChangeTextAlignment(align) {
 }
 
 function onGalleryView() {
+    resetUploadedImg()
     document.querySelector('body').classList.remove('menu-open')
     document.querySelector('.editor').classList.add('hide')
     document.querySelector('.my-memes-gallery').classList.add('hide')
@@ -219,3 +231,60 @@ function onDeleteLine() {
     deleteLine()
     renderMeme()
 }
+
+function onAddSticker(elSticker) {
+    addLine(elSticker.innerText)
+    renderMeme()
+}
+
+function onShareToFB() {
+    const canvasData = gElCanvas.toDataURL('image/jpeg')
+    // After a successful upload, allow the user to share on Facebook
+    function onSuccess(uploadedImgUrl) {
+        const encodedUploadedImgUrl = encodeURIComponent(uploadedImgUrl)
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodedUploadedImgUrl}&t=${encodedUploadedImgUrl}`)
+
+    }
+    uploadImg(canvasData, onSuccess)
+}
+
+function onImgInput(ev) {
+    loadImageFromInput(ev, setNewImg)
+}
+
+
+function loadImageFromInput(ev, onImageReady) {
+    const reader = new FileReader()
+    reader.onload = (event) => {
+        const img = new Image()
+        img.src = event.target.result
+        img.onload = () => {
+            onImageReady(img)
+        }
+    }
+    reader.readAsDataURL(ev.target.files[0])
+}
+
+function setNewImg(img) {
+    gUploadedImg = img
+    renderMeme()
+    openMemeEditor()
+}
+
+function resetUploadedImg(){
+     gUploadedImg= null
+}
+
+function renderImg(img) {
+    gElCanvas.height = (img.naturalHeight / img.naturalWidth) * gElCanvas.width
+    gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
+    openMemeEditor()
+}
+
+
+
+
+
+
+
+

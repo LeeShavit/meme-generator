@@ -4,13 +4,21 @@ let gImgs
 
 _createImgs()
 
-function getImgUrl(id) {
+function getImg(id) {
     const img = gImgs.find(img => img.id === id)
-    return img.url
+    const elImg = new Image()
+    elImg.src = img.url
+    return elImg
 }
 
-function getImgs() {
-    return gImgs
+function getImgs(filterKey) {
+    if (!filterKey) return gImgs
+
+    return gImgs.filter(img => img.keywords.some(keyword => keyword.includes(filterKey)))
+}
+
+function addImg(img) {
+
 }
 
 function _createImgs() {
@@ -33,4 +41,18 @@ function _createImgs() {
         { id: 16, url: 'img/16.jpg', keywords: ['man', 'cry'] },
         { id: 17, url: 'img/17.jpg', keywords: ['politic', 'peach'] },
         { id: 18, url: 'img/18.jpg', keywords: ['toy', 'explain'] }]
+}
+
+function getKeywordsSize() {
+    const allKeyWords = gImgs.reduce((acc, img) => {
+        const keywords= img.keywords
+        acc.push(...keywords)
+        return acc
+    }, [])
+    const keywordCount= allKeyWords.reduce((acc,keyword)=>{
+        if(!acc[keyword]) acc[keyword]=0
+        acc[keyword]++
+        return acc
+    },{})
+    return keywordCount
 }

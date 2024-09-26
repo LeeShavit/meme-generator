@@ -36,13 +36,14 @@ function setTextAlignment(align) {
     gMeme.lines[gMeme.selectedLineIdx].textAlign = align
 }
 
-function addLine() {
-    gMeme.lines.push(_createLine())
+function addLine(txt) {
+    gMeme.lines.push(_createLine(txt))
     gMeme.selectedLineIdx = gMeme.lines.length - 1
 }
 
 function deleteLine() {
     gMeme.lines.splice(gMeme.selectedLineIdx, 1)
+    gMeme.selectedLineIdx= 0
 }
 
 function switchSelectedLine() {
@@ -84,7 +85,11 @@ function getSavedMemes() {
     return loadFromStorage(KEY)
 }
 
-function _createMeme(imgId = 1, txt = 'You Text Here') {
+function getUploadedImgMeme(){
+    
+}
+
+function _createMeme(imgId = 1, txt) {
     return {
         selectedImgId: imgId,
         selectedLineIdx: 0,
@@ -92,7 +97,7 @@ function _createMeme(imgId = 1, txt = 'You Text Here') {
     }
 }
 
-function _createLine(txt) {
+function _createLine(txt= 'Your Text Here') {
     return {
         txt,
         size: 30,
