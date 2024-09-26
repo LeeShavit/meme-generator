@@ -16,5 +16,22 @@
 .main-nav ul{
     display: flex;
     gap: 20px;
+}
+
+.main-nav li{
     cursor: pointer;
+}
+
+.menu-open-screen{
+    position: fixed;
+    inset: 0;
+    background-color: #ffa3f73b;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .5s;
+}
+
+body.menu-open .menu-open-screen{
+    pointer-events: auto;
+    opacity: 1;
 }

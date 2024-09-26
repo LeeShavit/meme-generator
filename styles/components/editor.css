@@ -8,15 +8,25 @@
     margin: auto;
 }
 
+.editor button{
+    cursor: pointer;
+}
+
 .editor-menu {
     display: grid;
     grid-auto-rows: max-content;
     gap: 20px;
+
+    min-width: 360px;
+
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .line-setting{    
     display: grid;
-    grid-template-columns: 6fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 6fr 1fr 1fr 1fr;
     justify-content: end;
     column-gap: 10px;
     width: 100%;
@@ -57,6 +67,10 @@
     border: none;
     background: none;
     cursor: pointer;
+}
+
+.move-line h4{
+    display: inline;
 }
 
 .sticker{

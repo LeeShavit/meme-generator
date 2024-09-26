@@ -1,5 +1,6 @@
-.share-modal{
+.share-btn-container{
     grid-column: 2/-1;
+    justify-self: center;
 
     display: flex;
     justify-content: space-evenly;
@@ -16,7 +17,6 @@
 
 .share-modal>*{
     width: max-content;
-    border: 1px solid gray;
 }
 
 .hide{

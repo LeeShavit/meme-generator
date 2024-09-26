@@ -1,0 +1,16 @@
+.my-memes-gallery {
+    max-width: 1100px;
+    padding-top: 20px;
+    margin: auto;
+}
+
+.memes-container {
+    column-gap: 10px;
+    padding-inline: 20px;
+}
+
+.saved-meme-container {
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+}

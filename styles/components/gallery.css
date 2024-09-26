@@ -6,7 +6,6 @@
 
 .imgs-container{
     column-gap: 10px; 
-
     padding-inline: 20px;
 }
 
@@ -25,3 +24,19 @@
     border-radius: 15px;
     margin: 20px;
 }
+
+.flexible-btn{
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+
+    background-color: pink;
+    color: rgb(0, 0, 0);
+    text-transform: uppercase;
+
+    padding: 15px 20px;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+

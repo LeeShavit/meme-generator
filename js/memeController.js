@@ -11,57 +11,55 @@ let gLastPos
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 
 function onInit() {
-    gElCanvas = document.querySelector('canvas')
+    gElCanvas = document.querySelector('.main-canvas')
     gCtx = gElCanvas.getContext('2d')
     gElImg = document.querySelector('.canvas-img')
     renderMeme()
+    resizeCanvas()
     renderGallery()
     addListeners()
     document.querySelector('input[name="meme-txt"]').value = getSelectedLineTxt()
 }
 
-function renderMeme() {
-    const meme = getMeme()
-    gElImg.src = getImgUrl(meme.selectedImgId)
-    gCtx.drawImage(gElImg, 0, 0, gElCanvas.width, gElCanvas.height)
-    meme.lines.forEach((line, idx) => drawText(line, idx, meme.selectedLineIdx))
+function renderMeme(meme = getMeme(), elCanvas = gElCanvas, ctx = gCtx) {
+    const elImg = new Image()
+    elImg.src = getImgUrl(meme.selectedImgId)
+    ctx.drawImage(elImg, 0, 0, elCanvas.width, elCanvas.height)
+    meme.lines.forEach((line, idx) => drawText(line, idx, meme.selectedLineIdx, elCanvas, ctx))
     document.querySelector('input[name="meme-txt"]').value = getSelectedLineTxt()
 }
 
-function drawText(line, lineIdx, selectedLineIdx) {
+function drawText(line, lineIdx, selectedLineIdx, elCanvas, ctx) {
     let diff = 10
     let posY = diff
     if (lineIdx === 1) {
-        posY = gElCanvas.height - line.size - diff
+        posY = elCanvas.height - line.size - diff
     } else if (lineIdx > 1) {
-        posY = gElCanvas.height / 2 - line.size / 2
+        posY = elCanvas.height / 2 - line.size / 2
     }
-    gCtx.textAlign = line.textAlign
+    ctx.textAlign = line.textAlign
+    const fontSize = line.size * (elCanvas.width / 300)
 
-    gCtx.font = line.size + 'px ' + line.font
-    gCtx.textBaseline = 'top'
-    gCtx.fillStyle = line.color
-    gCtx.strokeStyle = 'black'
+    ctx.font = fontSize + 'px ' + line.font
+    ctx.textBaseline = 'top'
+    ctx.fillStyle = line.color
+    ctx.strokeStyle = 'black'
     //save pos if not found
     if (!gLinesPos[lineIdx]) {
-        console.log('here')
         gLinesPos[lineIdx] = {
             x: diff,
             y: posY,
-            width: gElCanvas.width - 20,
-            height: line.size
+            height: fontSize
         }
     }
-    const { x, y, width, height } = gLinesPos[lineIdx]
-    console.log(gLinesPos[lineIdx])
-    console.log(x)
-    gCtx.fillText(line.txt, x, y, width)
-    gCtx.strokeText(line.txt, x, y, width)
+    const { x, y, height } = gLinesPos[lineIdx]
+    ctx.fillText(line.txt, x, y, elCanvas.width - 20)
+    ctx.strokeText(line.txt, x, y, elCanvas.width - 20)
 
     if (lineIdx === selectedLineIdx) {
         gCtx.beginPath()
         gCtx.strokeStyle = 'white'
-        gCtx.rect(10, y, width, height + 2)
+        gCtx.rect(10, y, elCanvas.width - 20, height + 2)
         gCtx.stroke()
     }
 }
@@ -93,11 +91,11 @@ function onSwitchLine() {
     renderMeme()
 }
 
-
 function isLineClicked(pos) {
+    console.log(gLinesPos, pos)
     return gLinesPos.findIndex(linePos =>
-        ((pos.x >= linePos.x) && (pos.x <= linePos.x + linePos.width)) &&
-        ((pos.y >= linePos.y) && (pos.y <= linePos.y + linePos.height))
+        ((pos.x >= linePos.x) && (pos.x <= linePos.x + gElCanvas.width - 20)) &&
+        ((pos.y >= linePos.y) && (pos.y <= linePos.y + gElCanvas.width - 20))
     )
 }
 
@@ -108,8 +106,12 @@ function onDownloadMeme(elLink) {
 }
 
 function resizeCanvas() {
+    if (document.querySelector('.editor').classList.contains('hide')) return
     const elContainer = document.querySelector('.canvas-container')
     gElCanvas.height = gElCanvas.width = elContainer.clientWidth - 10
+    const { selectedLineIdx, lines } = getMeme()
+    const lineHeight = lines[selectedLineIdx].size * (gElCanvas.width / 300)
+    gLinesPos[selectedLineIdx].height = lineHeight
 }
 
 function addListeners() {
@@ -174,7 +176,7 @@ function onMove(ev) {
 //to do
 function onUp() {
     lineIsDrag = false
-    document.body.style.cursor = 'grab'
+    document.body.style.cursor = 'auto'
 }
 
 function onChangeFont(elSelect) {
@@ -196,14 +198,11 @@ function onChangeTextAlignment(align) {
     renderMeme()
 }
 
-function onMemeView() {
-    document.querySelector('.gallery').classList.add('hide')
-    document.querySelector('.editor').classList.add('hide')
-}
-
 function onGalleryView() {
-    document.querySelector('.gallery').classList.remove('hide')
+    document.querySelector('body').classList.remove('menu-open')
     document.querySelector('.editor').classList.add('hide')
+    document.querySelector('.my-memes-gallery').classList.add('hide')
+    document.querySelector('.gallery').classList.remove('hide')
 }
 
 function onSaveMeme() {

@@ -1,4 +1,4 @@
-@media (min-width: 0){
+@media (max-width: 639px){
     .editor {
         grid-template-columns: 1fr;
         width: 90vw;
@@ -6,6 +6,29 @@
     }
     .imgs-container{
         column-count: 4;
+    }
+    .memes-container {
+        column-count: 4;
+    }
+
+    .main-nav ul{
+        position: fixed;
+        top: 0;
+        right: 0;
+
+        transition: .5s;
+        transform: translateX(120%);
+        flex-direction: column;
+        gap: 20px;
+
+        height: 100vh;
+        padding: 10px;
+        background: linear-gradient(156deg,rgb(187, 188, 222)0%, rgb(162, 177, 226) 5%,rgba(164,166,226,1)10%, rgba(238,174,230,1) 65%,  rgba(238,174,202,1)100%);
+        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    }
+
+     body.menu-open .main-nav ul{
+        transform: translateX(0);
     }
 
 }
@@ -23,5 +46,11 @@
     .imgs-container{
         column-count: 6;
     }
-    
+    .memes-container {
+        column-count: 6;
+    }
+
+    .toggle-menu-btn{
+        display: none;
+    }    
 }

@@ -5,31 +5,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles/styles.css">
+    <script src="https://kit.fontawesome.com/d582832d19.js" crossorigin="anonymous"></script>
     <title>Leelush's Memes</title>
 </head>
 
 <body onload="onInit()">
         <header class="">
             <nav class="main-nav">
+                <div class="menu-open-screen" onclick="onToggleMenu()"></div>
                 <h1>Lee's meme generator</h1>
                 <ul>
                     <li onclick="onGalleryView()">Gallery</li>
-                    <li onclick="onMemeView()">My Memes</li>
+                    <li onclick="onMyMemesView()">My Memes</li>
                     <li>About</li>
+                </ul>
+                    <button class="toggle-menu-btn" onclick="onToggleMenu()"><i class="fa-solid fa-bars"></i></button>
             </nav>
         </header>
         <section class="editor hide">
             <div class="canvas-container">
-                <canvas width="400" height="400"></canvas>
+                <canvas class="main-canvas" width="400" height="400"></canvas>
                 <div style="display:none;"><img class="canvas-img" src="img/1.jpg" /></div>
             </div>
             <div class="editor-menu">
                 <div class="line-setting">
-                    <h4>Edit Text Line </h4>
-                    <p><span>1</span>/<span>3</span></p>
-                    <button onclick="onAddLine()">+</button>
-                    <button onclick="onSwitchLine()">↕︎</button>
-                    <button onclick="onDeleteLine()">🗑️</button>
+                    <h4>Edit Text Line </h4>                    <button onclick="onAddLine()">+</button>
+                    <button onclick="onSwitchLine()"><i class="fa-solid fa-up-down"></i></button>
+                    <button onclick="onDeleteLine()"><i class="fa-solid fa-trash"></i></button>
                 </div>
                 <div class="text-edit-toolbar">
                     <select class="font-select" onchange="onChangeFont(this)" >
@@ -41,23 +43,24 @@
                         <option>Roboto</option>
                         <option>Calibri</option>
                     </select>
-                    <button onclick="onSetFontSize(-1)">A⁻</button>
-                    <button onclick="onSetFontSize(1)">A⁺</button>
-                    <button onclick="onChangeTextAlignment('left')">≪</button>
-                    <button onclick="onChangeTextAlignment('center')">∧</button>
-                    <button onclick="onChangeTextAlignment('right')">≫</button>
+                    <button onclick="onSetFontSize(-1)"><i class="fa-solid fa-font"></i>−</button>
+                    <button onclick="onSetFontSize(1)"><i class="fa-solid fa-font"></i>+</button>
+                    <button onclick="onChangeTextAlignment('left')"><i class="fa-solid fa-align-left"></i></button>
+                    <button onclick="onChangeTextAlignment('center')"><i class="fa-solid fa-align-center"></i></button>
+                    <button onclick="onChangeTextAlignment('right')"><i class="fa-solid fa-align-right"></i></button>
                     <input class="color-select" type="color" onchange="onSetFontColor(this)" value="#ffffff">
                     <input class="meme-txt" name="meme-txt" placeholder="Enter your meme text" onchange="onSetLineTxt()">
                 </div>
-                <div class="move-line">
-                    <button onclick="onMoveLine(-1)">Move Line ⇩</button>
-                    <button onclick="onMoveLine(1)">Move Line ⇧</button>
+                <div class="move-line"> 
+                    <h4>Move line</h4>
+                    <button onclick="onMoveLine(-1)"><i class="fa-solid fa-arrows-down-to-line"></i></button>
+                    <button onclick="onMoveLine(1)"><i class="fa-solid fa-arrows-up-to-line"></i></button>
                 </div>
                 <div class="sticker"> 😚🥹😁😉🤪🥳🥸</div>
-                <section class="share-modal">
-                    <button onclick="onSaveMeme()">⬇️ Save</button>
-                    <a class="download-btn" href="#" onclick="onDownloadMeme(this)" download="">💾 Download</a>
-                    <button>👤 Share to FB </button>
+                <section class="share-btn-container">
+                    <button onclick="onSaveMeme()"><i class="fa-solid fa-floppy-disk"></i></button>
+                    <a class="download-btn" href="#" onclick="onDownloadMeme(this)" download=""><i class="fa-solid fa-download"></i></a>
+                    <button><i class="fa-brands fa-square-facebook"></i></button>
                 </section>
             </div>
         </div>
@@ -65,9 +68,16 @@
         <section class="gallery">
             <input class="meme-search" placeholder="Search...">
             <div class="imgs-container"></div>
+            <button class="flexible-btn" onclick="onPresentRandomMeme()">I'm flexible</button>
+        </section>
+        <section class="my-memes-gallery gallery hide">
+            <input class="meme-search" placeholder="Search...">
+            <div class="memes-container"></div>
         </section>
 
 </body>
+<script src="js/service/strorage.service.js"></script>
+<script src="js/service/util.service.js"></script>
 <script src="js/service/memeService.js"></script>
 <script src="js/service/galleryService.js"></script>
 <script src="js/memeController.js"></script>
