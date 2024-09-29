@@ -27,7 +27,9 @@ function renderMeme(meme = getMeme(), elCanvas = gElCanvas, ctx = gCtx) {
     const img = (gUploadedImg) ? gUploadedImg : getImg(meme.selectedImgId)
     ctx.drawImage(img, 0, 0, elCanvas.width, elCanvas.height)
     meme.lines.forEach((line, idx) => drawText(line, idx, meme.selectedLineIdx, elCanvas, ctx))
-    document.querySelector('input[name="meme-txt"]').value = getSelectedLineTxt()
+    if(meme.selectedLineIdx!== -1){
+        document.querySelector('input[name="meme-txt"]').value = getSelectedLineTxt()
+    }
 }
 
 function drawText(line, lineIdx, selectedLineIdx, elCanvas, ctx) {
@@ -52,7 +54,7 @@ function drawText(line, lineIdx, selectedLineIdx, elCanvas, ctx) {
             x: diff,
             y: posY,
             height: fontSize,
-            width: ctx.measureText(line.txt).width
+            width: ctx.measureText(line.txt).width+ 5
         }
     }
 
@@ -71,6 +73,9 @@ function drawText(line, lineIdx, selectedLineIdx, elCanvas, ctx) {
 function onSetLineTxt() {
     const txt = document.querySelector('input[name="meme-txt"]').value
     setLineTxt(txt)
+    const idx = getMeme().selectedLineIdx
+    const line = getMeme().lines[idx]
+    gLinesPos[idx].width = gCtx.measureText(line.txt).width
     renderMeme()
 }
 
@@ -82,6 +87,10 @@ function onSetFontColor(elInput) {
 
 function onSetFontSize(diff) {
     SetFontSize(diff)
+    const idx = getMeme().selectedLineIdx
+    const line = getMeme().lines[idx]
+    gLinesPos[idx].width = gCtx.measureText(line.txt).width + 5
+    gLinesPos[idx].height = line.size * (gElCanvas.width / 300)
     renderMeme()
 }
 
@@ -103,6 +112,11 @@ function findLineClicked(pos) {
 }
 
 function onDownloadMeme(elLink) {
+    const meme= getMeme()
+    const prevSelectedLine= meme.selectedLineIdx
+    meme.selectedLineIdx=-1
+    renderMeme(meme) 
+    meme.selectedLineIdx= prevSelectedLine
     const dataUrl = gElCanvas.toDataURL()
     elLink.href = dataUrl
     elLink.download = 'my-meme'
@@ -271,8 +285,8 @@ function setNewImg(img) {
     openMemeEditor()
 }
 
-function resetUploadedImg(){
-     gUploadedImg= null
+function resetUploadedImg() {
+    gUploadedImg = null
 }
 
 function renderImg(img) {
