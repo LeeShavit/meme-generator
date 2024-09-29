@@ -7,7 +7,7 @@ let gElImg
 let gLinesPos = []
 
 let gLineDrag= {
-    isDrag: true,
+    isDrag: false,
     idx: -1
 }
 let gIsChangeSize = false
@@ -205,7 +205,6 @@ function onDown(ev) {
     document.body.style.cursor = 'grabbing'
 }
 
-//to do
 function onMove(ev) {
     if (!gLineDrag.isDrag) return
 
@@ -231,7 +230,6 @@ function onMove(ev) {
     renderMeme()
 }
 
-//to do
 function onUp() {
     gLineDrag.isDrag = false
     gIsChangeSize = false
