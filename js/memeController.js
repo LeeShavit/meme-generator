@@ -6,7 +6,12 @@ let gElImg
 
 let gLinesPos = []
 
-let gLineDragIdx = -1
+let gLineDrag= {
+    isDrag: true,
+    idx: -1
+}
+let gIsChangeSize = false
+
 let gLastPos
 const TOUCH_EVS = ['touchstart', 'touchmove', 'touchend']
 
@@ -27,7 +32,7 @@ function renderMeme(meme = getMeme(), elCanvas = gElCanvas, ctx = gCtx) {
     const img = (gUploadedImg) ? gUploadedImg : getImg(meme.selectedImgId)
     ctx.drawImage(img, 0, 0, elCanvas.width, elCanvas.height)
     meme.lines.forEach((line, idx) => drawText(line, idx, meme.selectedLineIdx, elCanvas, ctx))
-    if(meme.selectedLineIdx!== -1){
+    if (meme.selectedLineIdx !== -1) {
         document.querySelector('input[name="meme-txt"]').value = getSelectedLineTxt()
     }
 }
@@ -35,7 +40,7 @@ function renderMeme(meme = getMeme(), elCanvas = gElCanvas, ctx = gCtx) {
 function drawText(line, lineIdx, selectedLineIdx, elCanvas, ctx) {
 
     ctx.textAlign = line.textAlign
-    const fontSize = line.size * (elCanvas.width / 300)
+    const fontSize = line.size
     ctx.font = fontSize + 'px ' + line.font
     ctx.textBaseline = 'top'
     ctx.fillStyle = line.color
@@ -54,7 +59,7 @@ function drawText(line, lineIdx, selectedLineIdx, elCanvas, ctx) {
             x: diff,
             y: posY,
             height: fontSize,
-            width: ctx.measureText(line.txt).width+ 5
+            width: ctx.measureText(line.txt).width
         }
     }
 
@@ -66,6 +71,9 @@ function drawText(line, lineIdx, selectedLineIdx, elCanvas, ctx) {
         gCtx.beginPath()
         gCtx.strokeStyle = 'white'
         gCtx.rect(x - 2, y, width + 4, height + 2)
+        gCtx.stroke()
+        gCtx.beginPath()
+        gCtx.arc(x + width + 2, y + height + 2, 5, 0, 2 * Math.PI);
         gCtx.stroke()
     }
 }
@@ -89,8 +97,9 @@ function onSetFontSize(diff) {
     SetFontSize(diff)
     const idx = getMeme().selectedLineIdx
     const line = getMeme().lines[idx]
-    gLinesPos[idx].width = gCtx.measureText(line.txt).width + 5
-    gLinesPos[idx].height = line.size * (gElCanvas.width / 300)
+    gCtx.font = line.size + 'px ' + line.font
+    gLinesPos[idx].width = gCtx.measureText(line.txt).width + 5 + diff
+    gLinesPos[idx].height = line.size + diff
     renderMeme()
 }
 
@@ -106,17 +115,17 @@ function onSwitchLine() {
 
 function findLineClicked(pos) {
     return gLinesPos.findIndex(linePos =>
-        ((pos.x >= linePos.x) && (pos.x <= linePos.x + linePos.width)) &&
-        ((pos.y >= linePos.y) && (pos.y <= linePos.y + linePos.height))
+        ((pos.x >= linePos.x-2) && (pos.x <= linePos.x + linePos.width+4)) &&
+        ((pos.y >= linePos.y) && (pos.y <= linePos.y + linePos.height+2))
     )
 }
 
 function onDownloadMeme(elLink) {
-    const meme= getMeme()
-    const prevSelectedLine= meme.selectedLineIdx
-    meme.selectedLineIdx=-1
-    renderMeme(meme) 
-    meme.selectedLineIdx= prevSelectedLine
+    const meme = getMeme()
+    const prevSelectedLine = meme.selectedLineIdx
+    meme.selectedLineIdx = -1
+    renderMeme(meme)
+    meme.selectedLineIdx = prevSelectedLine
     const dataUrl = gElCanvas.toDataURL()
     elLink.href = dataUrl
     elLink.download = 'my-meme'
@@ -124,11 +133,17 @@ function onDownloadMeme(elLink) {
 
 function resizeCanvas() {
     if (document.querySelector('.editor').classList.contains('hide')) return
+    const prevSize = gElCanvas.width
     const elContainer = document.querySelector('.canvas-container')
     gElCanvas.height = gElCanvas.width = elContainer.clientWidth - 10
-    const { selectedLineIdx, lines } = getMeme()
-    const lineHeight = lines[selectedLineIdx].size * (gElCanvas.width / 300)
-    gLinesPos[selectedLineIdx].height = lineHeight
+
+    const diff = gElCanvas.width / prevSize
+    setlinesSize(diff)
+    const { lines } = getMeme()
+    lines.forEach((line, idx) => {
+        gLinesPos[idx].height = line.size
+        gLinesPos[idx].width *= diff
+    })
 }
 
 function addListeners() {
@@ -175,9 +190,16 @@ function onDown(ev) {
     const pos = getEvPos(ev)
     const currLineIdx = findLineClicked(pos)
     if (currLineIdx === -1) return
+    gLineDrag.isDrag = true
+    gLineDrag.idx = currLineIdx
+
+    if (isCircleClicked(pos)) {
+        gIsChangeSize = true 
+        return
+    }
     selectLine(currLineIdx)
     renderMeme()
-    gLineDragIdx = currLineIdx
+
     //* Save the pos we start from
     gLastPos = pos
     document.body.style.cursor = 'grabbing'
@@ -185,14 +207,25 @@ function onDown(ev) {
 
 //to do
 function onMove(ev) {
-    if (gLineDragIdx === -1) return
+    if (!gLineDrag.isDrag) return
+
     const pos = getEvPos(ev)
+    if (findLineClicked(pos) !== -1) document.body.style.cursor = 'grab'
+    else document.body.style.cursor = 'auto'
+
 
     const dx = pos.x - gLastPos.x
     const dy = pos.y - gLastPos.y
 
-    gLinesPos[gLineDragIdx].x += dx
-    gLinesPos[gLineDragIdx].y += dy
+    const diff = (dx + dy) / 10
+
+    if (gIsChangeSize === true) {
+        onSetFontSize(diff)
+    } else {
+        if (!gLineDrag.isDrag) return
+        gLinesPos[gLineDrag.idx].x += dx
+        gLinesPos[gLineDrag.idx].y += dy
+    }
 
     gLastPos = pos
     renderMeme()
@@ -200,7 +233,8 @@ function onMove(ev) {
 
 //to do
 function onUp() {
-    gLineDragIdx = -1
+    gLineDrag.isDrag = false
+    gIsChangeSize = false
     document.body.style.cursor = 'auto'
 }
 
@@ -294,6 +328,20 @@ function renderImg(img) {
     gCtx.drawImage(img, 0, 0, gElCanvas.width, gElCanvas.height)
     openMemeEditor()
 }
+
+function isCircleClicked(clickedPos) {
+    const { selectedLineIdx } = getMeme()
+    if (selectedLineIdx) return
+    const linePos = gLinesPos[selectedLineIdx]
+    const posX = linePos.x + linePos.width + 2
+    const posY = linePos.y + linePos.height + 2
+    const distance = Math.sqrt((posX - clickedPos.x) ** 2 + (posY - clickedPos.y) ** 2)
+    console.log(distance)
+    return distance <= 5
+}
+
+
+
 
 
 

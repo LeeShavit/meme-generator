@@ -17,23 +17,23 @@
     grid-auto-rows: max-content;
     gap: 20px;
 
-    min-width: 360px;
+    min-width: 320px;
 
     padding: 20px;
     border-radius: 20px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-.line-setting{    
+.line-btns{    
     display: grid;
-    grid-template-columns: 6fr 1fr 1fr 1fr;
+    grid-template-columns: 5fr 1fr 1fr 1fr;
     justify-content: end;
     column-gap: 10px;
     width: 100%;
 }
 
-.line-setting h4{
-    justify-self: start;
+.line-btns.line-move-btns{
+    grid-template-columns: 5fr 1fr 1fr;
 }
 
 .text-edit-toolbar{
@@ -46,12 +46,24 @@
     grid-row: 1;
 }
 
-.meme-txt{
+input.meme-txt{
     grid-column: 1/8;
     width: 100%;
     height: 60px;
     border: 0;
     border-top: 1px solid rgb(199, 199, 199);
+}
+
+.editor input, .editor label {
+    cursor: pointer;
+}
+
+
+label.color-select{
+    display: block;
+    text-align: center;
+    padding-block: 2px;
+    padding-inline: 4px;
 }
 
 .font-select{
@@ -61,12 +73,11 @@
     margin: 5px;
 }
 
-.color-select{
-    position: relative;
+input.color-select{
+    position: absolute;
+    width: 0;
     padding: 0;
     border: none;
-    background: none;
-    cursor: pointer;
 }
 
 .move-line h4{

@@ -9,11 +9,25 @@
     padding-inline: 20px
 }
 
+.imgs-container:has(.gallery-img:hover) .gallery-img{
+    opacity: .6;
+    scale: .9;
+}
+.imgs-container:has(.gallery-img:hover) .gallery-img:hover{
+    opacity: 1;
+    scale: 1;
+}
+
+
 .gallery-img{
     width: 100%;
     border-radius: 5px;
+
+    transition: all 400ms;
     cursor: pointer;
 }
+
+
 
 .meme-search{
     display: inline;
@@ -36,8 +50,7 @@
     position: fixed;
 
     background-color: pink;
-    color: rgb(0, 0, 0);
-    text-transform: uppercase;
+    color: white;
 
     padding: 15px 20px;
     border-radius: 10px;

@@ -18,6 +18,7 @@ function setLineTxt(txt) {
 }
 
 function setImg(id) {
+    gMeme = _createMeme()
     gMeme.selectedImgId = id
 }
 
@@ -56,6 +57,7 @@ function selectLine(idx) {
 }
 
 function getSelectedLineTxt() {
+    if(gMeme.selectedLineIdx=== -1) return ''
     return gMeme.lines[gMeme.selectedLineIdx].txt
 }
 
@@ -85,14 +87,15 @@ function getSavedMemes() {
     return loadFromStorage(KEY)
 }
 
-function getUploadedImgMeme(){
-    
+function setlinesSize(diff){
+    gMeme.lines.forEach(line=> line.size*=diff)
 }
+
 
 function _createMeme(imgId = 1, txt) {
     return {
         selectedImgId: imgId,
-        selectedLineIdx: 0,
+        selectedLineIdx: -1,
         lines: [_createLine(txt)]
     }
 }
@@ -100,7 +103,7 @@ function _createMeme(imgId = 1, txt) {
 function _createLine(txt= 'Your Text Here') {
     return {
         txt,
-        size: 30,
+        size: 40,
         color: 'pink',
         font: 'impact',
         textAlign: 'start'

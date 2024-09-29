@@ -19,7 +19,11 @@
 }
 
 .main-nav li{
+    transition: .5s;
     cursor: pointer;
+}
+.main-nav li:hover{
+    scale: 1.2;
 }
 
 .menu-open-screen{
